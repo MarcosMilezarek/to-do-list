@@ -1,12 +1,13 @@
 package devmarcos.todolist.service;
 
 import devmarcos.todolist.Model.Task;
+import devmarcos.todolist.controller.CriarTaskDTO;
 
 import java.util.List;
 
-public interface GerenciaTask {
+public interface TaskService {
 
-    String CriarTarefa(Task task);
+    String CriarTarefa(CriarTaskDTO criarTaskDTO);
 
     String AtualizarTarefa(Task task);
 

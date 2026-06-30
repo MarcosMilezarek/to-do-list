@@ -3,7 +3,11 @@ package devmarcos.todolist.Model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import org.springframework.data.annotation.Id;
+import jakarta.persistence.Id;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.Instant;
 
 @Entity
 
@@ -14,8 +18,26 @@ public class Usuario {
     private String nome;
     private String email;
 
+    @CreationTimestamp
+    private Instant creationTime;
+
+    @UpdateTimestamp
+    private Instant modificationTime;
+
+    public Usuario(Integer id, String nome, String email, Instant creationTime, Instant modificationTime) {
+        this.id = id;
+        this.nome = nome;
+        this.email = email;
+        this.creationTime = creationTime;
+        this.modificationTime = modificationTime;
+    }
+
     public Integer getId() {
         return id;
+    }
+
+    public Usuario(Integer id) {
+        this.id = id;
     }
 
     public void setId(Integer id) {
@@ -38,9 +60,5 @@ public class Usuario {
         this.email = email;
     }
 
-    public Usuario(Integer id, String nome, String email) {
-        this.id = id;
-        this.nome = nome;
-        this.email = email;
-    }
+
 }
