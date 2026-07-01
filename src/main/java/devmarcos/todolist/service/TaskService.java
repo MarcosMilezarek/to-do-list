@@ -9,10 +9,12 @@ public interface TaskService {
 
     String CriarTarefa(CriarTaskDTO criarTaskDTO);
 
-    String AtualizarTarefa(Task task);
+    String AtualizarTarefa(CriarTaskDTO criarTaskDTO, Long id);
 
-    String DeletarTarefa(Task task);
+    String DeletarTarefa(Long id);
 
-    List<Task> SelecionarTarefa(Integer id);
+    Task SelecionarTarefa(Long id);
+
+    List<Task> ConsultarTodas();
 
 }

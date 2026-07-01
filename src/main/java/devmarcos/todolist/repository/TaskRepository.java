@@ -7,15 +7,15 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface TaskRepository extends JpaRepository<Task, Integer> {
+public interface TaskRepository extends JpaRepository<Task, Long> {
 
     @Override
-    Optional<Task> findById(Integer integer);
+    Optional<Task> findById(Long id);
 
     Task save(Task task);
 
     @Override
-    void deleteById(Integer integer);
+    void deleteById(Long id);
 
 
 }
