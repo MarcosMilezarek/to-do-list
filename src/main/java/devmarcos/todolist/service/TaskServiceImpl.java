@@ -4,6 +4,7 @@ import devmarcos.todolist.Model.Task;
 import devmarcos.todolist.controller.CriarTaskDTO;
 import devmarcos.todolist.repository.TaskRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.DeleteMapping;
 
 import java.time.Instant;
 import java.util.List;
@@ -30,18 +31,37 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public String AtualizarTarefa(Task task) {
-        return "";
+    public String AtualizarTarefa(CriarTaskDTO criarTaskDTO, Long id) {
+
+        var TaskAtualizado = taskRepository.findById(id);
+
+        if (TaskAtualizado.isPresent()) {
+            var entidade = TaskAtualizado.get();
+            entidade.setDescricao(criarTaskDTO.descricao().toString());
+            entidade.setStatus(criarTaskDTO.status().toString());
+            taskRepository.save(entidade);
+            return "Tarefa Atualizada";
+
+        } else {
+            return "Nenhuma tarefa encontrada!";
+        }
+
+
     }
 
     @Override
-    public String DeletarTarefa(Task task) {
-        taskRepository.delete(task);
+    public String DeletarTarefa(Long id) {
+        taskRepository.deleteById(id);
         return "Tarefa removida com sucesso";
     }
 
     @Override
-    public List<Task> SelecionarTarefa(Integer id) {
-        return taskRepository.findById(id).stream().toList();
+    public Task SelecionarTarefa(Long id) {
+        return taskRepository.findById(id).get();
+    }
+
+    @Override
+    public List<Task> ConsultarTodas() {
+        return taskRepository.findAll();
     }
 }
