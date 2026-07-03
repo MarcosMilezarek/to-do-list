@@ -23,11 +23,7 @@ public class TaskServiceImpl implements TaskService {
     public String CriarTarefa(CriarTaskDTO criarTaskDTO) {
         Task entidade = new Task(criarTaskDTO.descricao(), criarTaskDTO.status(), Instant.now(), null);
         taskRepository.save(entidade);
-
-
         return "Task criada com sucesso!\n" + "[" + entidade.getId().toString() + "] " + entidade.getDescricao();
-
-
     }
 
     @Override
@@ -43,7 +39,7 @@ public class TaskServiceImpl implements TaskService {
             return "Tarefa Atualizada";
 
         } else {
-            return "Nenhuma tarefa encontrada!";
+            return null;
         }
 
 
@@ -52,12 +48,20 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public String DeletarTarefa(Long id) {
         taskRepository.deleteById(id);
-        return "Tarefa removida com sucesso";
+        if (taskRepository.findById(id).isPresent()){
+            return "Tarefa removida com sucesso";
+        }else return null;
+
     }
 
     @Override
     public Task SelecionarTarefa(Long id) {
-        return taskRepository.findById(id).get();
+        var entidade = taskRepository.findById(id);
+
+        if (entidade.isPresent()) {
+            return entidade.get();
+        } else return null;
+
     }
 
     @Override

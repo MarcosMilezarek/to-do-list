@@ -5,25 +5,44 @@ import devmarcos.todolist.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.web.util.UriBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/task")
+@RequestMapping("/tasks")
 public class TaskController {
     @Autowired
     TaskService taskService;
 
 
     //    metodo de adicioanr algo no bd sempre vai ser POST pra responder a requisição
-    @PostMapping("/novatarefa/")
+    @PostMapping
     @ResponseBody
     public ResponseEntity<String> CadastrarTarefa(@RequestBody CriarTaskDTO criarTaskDTO) {
-        var tarefaSalva = taskService.CriarTarefa(criarTaskDTO);
-        return ResponseEntity.ok(tarefaSalva);
+
+
+        if (criarTaskDTO.descricao() != null && criarTaskDTO.status() != null) {
+
+            var tarefaSalva = taskService.CriarTarefa(criarTaskDTO);
+
+            URI location = ServletUriComponentsBuilder
+                    .fromCurrentRequest()
+                    .path("/tasks")
+                    .buildAndExpand(tarefaSalva)
+                    .toUri();
+            return ResponseEntity.created(location).body(tarefaSalva);
+
+        }else  {
+            return ResponseEntity.badRequest().body("Ocorreu um erro ao cadastrar task" +
+                    "Algum dos elementos não foi preenchido.");
+        }
+
     }
 
-    @GetMapping("/listarTarefa/{idtarefa}")
+    @GetMapping("/{idtarefa}")
     public ResponseEntity<Task> listarTarefa(@PathVariable("idtarefa") Long idtarefa) {
         var taskConsultada = taskService.SelecionarTarefa(idtarefa);
 
@@ -34,19 +53,24 @@ public class TaskController {
         }
     }
 
-    @GetMapping("/getall")
+    @GetMapping
     public ResponseEntity<List<Task>> getAll() {
         List<Task> consulta = taskService.ConsultarTodas();
         return ResponseEntity.ok(consulta);
     }
 
-    @DeleteMapping("/del/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> ExcluirTarefa(@PathVariable("id") Long id) {
         var delete = taskService.DeletarTarefa(id);
 
-        return ResponseEntity.ok(delete);
+        if(delete != null) {
+            return ResponseEntity.ok(delete);
+        } else  {
+            return ResponseEntity.notFound().build();
+        }
+
     }
-    @PutMapping("/update/{id}/")
+    @PutMapping("/{id}/")
     public ResponseEntity<String> AtualizarTarefa(@PathVariable("id") Long id, @RequestBody CriarTaskDTO criarTaskDTO) {
         var tarefa =  taskService.AtualizarTarefa(criarTaskDTO, id);
 
