@@ -4,17 +4,18 @@ import devmarcos.todolist.Model.Task;
 import devmarcos.todolist.controller.CriarTaskDTO;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface TaskService {
 
-    String CriarTarefa(CriarTaskDTO criarTaskDTO);
+    Task criarTarefa(CriarTaskDTO criarTaskDTO);
 
-    String AtualizarTarefa(CriarTaskDTO criarTaskDTO, Long id);
+    Optional<Task> atualizarTarefa(CriarTaskDTO criarTaskDTO, Long id);
 
-    String DeletarTarefa(Long id);
+    boolean deletarTarefa(Long id);
 
-    Task SelecionarTarefa(Long id);
+    Optional<Task> selecionarTarefa(Long id);
 
-    List<Task> ConsultarTodas();
+    List<Task> consultarTodas();
 
 }

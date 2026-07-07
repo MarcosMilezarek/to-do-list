@@ -1,6 +1,8 @@
 package devmarcos.todolist.Model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -8,7 +10,10 @@ import java.time.Instant;
 
 @Entity
 @Table(name = "Tarefas")
+@Getter
+@Setter
 public class Task {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,25 +33,5 @@ public class Task {
         this.status = status;
         this.creationTime = creationTime;
         this.modificationTime = modificationTime;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 }

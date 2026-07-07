@@ -4,10 +4,10 @@ import devmarcos.todolist.Model.Task;
 import devmarcos.todolist.controller.CriarTaskDTO;
 import devmarcos.todolist.repository.TaskRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.DeleteMapping;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -20,52 +20,44 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public String CriarTarefa(CriarTaskDTO criarTaskDTO) {
-        Task entidade = new Task(criarTaskDTO.descricao(), criarTaskDTO.status(), Instant.now(), null);
-        taskRepository.save(entidade);
-        return "Task criada com sucesso!\n" + "[" + entidade.getId().toString() + "] " + entidade.getDescricao();
+    public Task criarTarefa(CriarTaskDTO criarTaskDTO) {
+        Task entidade = new Task(
+                criarTaskDTO.descricao(),
+                criarTaskDTO.status(),
+                Instant.now(),
+                null);
+        return taskRepository.save(entidade);
+
     }
 
     @Override
-    public String AtualizarTarefa(CriarTaskDTO criarTaskDTO, Long id) {
+    public Optional<Task> atualizarTarefa(CriarTaskDTO criarTaskDTO, Long id) {
+        return taskRepository.findById(id).map(entidade -> {
+            entidade.setDescricao(criarTaskDTO.descricao());
+            entidade.setStatus(criarTaskDTO.status());
+            return taskRepository.save(entidade);
+        });
+    }
 
-        var TaskAtualizado = taskRepository.findById(id);
-
-        if (TaskAtualizado.isPresent()) {
-            var entidade = TaskAtualizado.get();
-            entidade.setDescricao(criarTaskDTO.descricao().toString());
-            entidade.setStatus(criarTaskDTO.status().toString());
-            taskRepository.save(entidade);
-            return "Tarefa Atualizada";
-
-        } else {
-            return null;
+    @Override
+    public boolean deletarTarefa(Long id) {
+        if (!taskRepository.existsById(id)) {
+            return false;
         }
-
-
-    }
-
-    @Override
-    public String DeletarTarefa(Long id) {
         taskRepository.deleteById(id);
-        if (taskRepository.findById(id).isPresent()){
-            return "Tarefa removida com sucesso";
-        }else return null;
+        return true;
+    }
 
+
+    @Override
+    public Optional<Task> selecionarTarefa(Long id) {
+        return taskRepository.findById(id);
     }
 
     @Override
-    public Task SelecionarTarefa(Long id) {
-        var entidade = taskRepository.findById(id);
-
-        if (entidade.isPresent()) {
-            return entidade.get();
-        } else return null;
-
-    }
-
-    @Override
-    public List<Task> ConsultarTodas() {
+    public List<Task> consultarTodas() {
         return taskRepository.findAll();
     }
+
+
 }
