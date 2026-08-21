@@ -25,6 +25,14 @@ public class Task {
     @UpdateTimestamp
     private Instant modificationTime;
 
+    @ManyToOne
+    @JoinColumn(name = "id_user")
+    private Usuario usuario;
+
+    @ManyToOne
+    @JoinColumn(name = "id_categoria")
+    private Category categoria;
+
     public Task() {
     }
 

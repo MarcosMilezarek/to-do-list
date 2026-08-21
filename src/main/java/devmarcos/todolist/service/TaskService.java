@@ -10,11 +10,11 @@ public interface TaskService {
 
     Task criarTarefa(CriarTaskDTO criarTaskDTO);
 
-    Optional<Task> atualizarTarefa(CriarTaskDTO criarTaskDTO, Long id);
+    Task atualizarTarefa(CriarTaskDTO criarTaskDTO, Long id);
 
-    boolean deletarTarefa(Long id);
+    Task deletarTarefa(Long id);
 
-    Optional<Task> selecionarTarefa(Long id);
+    Task selecionarTarefa(Long id);
 
     List<Task> consultarTodas();
 

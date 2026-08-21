@@ -1,23 +1,21 @@
 package devmarcos.todolist.Model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
+import java.util.List;
 
 @Entity
 @Getter
 @Setter
-public class Usuario {
+public class Usuario{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     private String nome;
     private String email;
 
@@ -27,8 +25,10 @@ public class Usuario {
     @UpdateTimestamp
     private Instant modificationTime;
 
-    public Usuario(Integer id, String nome, String email, Instant creationTime, Instant modificationTime) {
-        this.id = id;
+    @OneToMany(mappedBy = "usuario")
+    private List<Task> tasks;
+
+    public Usuario(String nome, String email, Instant creationTime, Instant modificationTime) {
         this.nome = nome;
         this.email = email;
         this.creationTime = creationTime;
@@ -38,11 +38,7 @@ public class Usuario {
     public Usuario() {
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public Usuario(Integer id) {
+    public Usuario(Long id) {
         this.id = id;
     }
 
