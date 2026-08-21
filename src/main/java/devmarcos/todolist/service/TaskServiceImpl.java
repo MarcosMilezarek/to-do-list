@@ -2,7 +2,9 @@ package devmarcos.todolist.service;
 
 import devmarcos.todolist.Model.Task;
 import devmarcos.todolist.controller.CriarTaskDTO;
+import devmarcos.todolist.exception.TaskNaoEncontradaException;
 import devmarcos.todolist.repository.TaskRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -31,27 +33,24 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Optional<Task> atualizarTarefa(CriarTaskDTO criarTaskDTO, Long id) {
-        return taskRepository.findById(id).map(entidade -> {
-            entidade.setDescricao(criarTaskDTO.descricao());
-            entidade.setStatus(criarTaskDTO.status());
-            return taskRepository.save(entidade);
-        });
+    public Task atualizarTarefa(CriarTaskDTO criarTaskDTO, Long id) {
+        Task entidade = taskRepository.findById(id).orElseThrow(() -> new TaskNaoEncontradaException(id));
+        entidade.setDescricao(criarTaskDTO.descricao());
+        entidade.setStatus(criarTaskDTO.status());
+        return taskRepository.save(entidade);
     }
 
     @Override
-    public boolean deletarTarefa(Long id) {
-        if (!taskRepository.existsById(id)) {
-            return false;
-        }
-        taskRepository.deleteById(id);
-        return true;
+    public Task deletarTarefa(Long id) {
+        Task tarefaExiste =  taskRepository.findById(id).orElseThrow(() -> new TaskNaoEncontradaException(id));
+        taskRepository.delete(tarefaExiste);
+        return tarefaExiste;
     }
 
 
     @Override
-    public Optional<Task> selecionarTarefa(Long id) {
-        return taskRepository.findById(id);
+    public Task selecionarTarefa(Long id) {
+        return taskRepository.findById(id).orElseThrow(() -> new TaskNaoEncontradaException(id));
     }
 
     @Override

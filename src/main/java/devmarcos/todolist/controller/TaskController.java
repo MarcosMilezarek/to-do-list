@@ -25,7 +25,6 @@ public class TaskController {
     }
 
 
-
     //    metodo de adicioanr algo no bd sempre vai ser POST pra responder a requisição
     @PostMapping
     @ResponseBody
@@ -39,10 +38,9 @@ public class TaskController {
 
     }
 
-
     @GetMapping("/{idtarefa}")
     public ResponseEntity<Task> listarTarefa(@PathVariable("idtarefa") Long idtarefa) {
-        return taskService.selecionarTarefa(idtarefa).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+        return ResponseEntity.ok(taskService.selecionarTarefa(idtarefa));
     }
 
     @GetMapping
@@ -52,15 +50,16 @@ public class TaskController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> ExcluirTarefa(@PathVariable("id") Long id) {
-        boolean deletado = taskService.deletarTarefa(id);
-        return deletado ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
+    public ResponseEntity<Task> ExcluirTarefa(@PathVariable("id") Long id) {
+        Task deletado = taskService.deletarTarefa(id);
+        return ResponseEntity.ok(deletado);
     }
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<Task> AtualizarTarefa(@PathVariable("id") Long id, @RequestBody CriarTaskDTO criarTaskDTO) {
-        return taskService.atualizarTarefa(criarTaskDTO, id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<Task> AtualizarTarefa(@PathVariable("id") Long id, @RequestBody @Valid CriarTaskDTO criarTaskDTO) {
+        Task tarefaAtualizada = taskService.atualizarTarefa(criarTaskDTO, id);
+        return ResponseEntity.ok(tarefaAtualizada);
+        }
     }
-}
 
