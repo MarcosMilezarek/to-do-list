@@ -62,4 +62,12 @@ public class GlobalExceptionHandler {
         ErroDTO dto = new ErroDTO(request.getRequestURI(), "Caminho não existe", Instant.now(), HttpStatus.NOT_FOUND);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(dto);
     }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseBody
+    @ExceptionHandler(UsuarioNaoEncontrado.class)
+    public ResponseEntity<ErroDTO> usuarioNaoEncontrado(UsuarioNaoEncontrado ex, HttpServletRequest request) {
+        ErroDTO dto = new ErroDTO(request.getRequestURI(), ex.getMessage(), Instant.now(), HttpStatus.NOT_FOUND);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(dto);
+    }
 }

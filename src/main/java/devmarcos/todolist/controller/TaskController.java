@@ -26,14 +26,12 @@ public class TaskController {
 
 
     //    metodo de adicioanr algo no bd sempre vai ser POST pra responder a requisição
-    @PostMapping
+    @PostMapping("/user/{id_user}")
     @ResponseBody
-    public ResponseEntity<Task> CadastrarTarefa(@RequestBody @Valid CriarTaskDTO criarTaskDTO) {
-
-        Task tarefaSalva = taskService.criarTarefa(criarTaskDTO);
-
+    public ResponseEntity<Task> CadastrarTarefa(@RequestBody @Valid CriarTaskDTO criarTaskDTO, @PathVariable("id_user")Long user_id) {
+        
+        Task tarefaSalva = taskService.criarTarefa(criarTaskDTO,  user_id);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(tarefaSalva.getId()).toUri();
-
         return ResponseEntity.created(location).body(tarefaSalva);
 
     }
@@ -43,9 +41,9 @@ public class TaskController {
         return ResponseEntity.ok(taskService.selecionarTarefa(idtarefa));
     }
 
-    @GetMapping
-    public ResponseEntity<List<Task>> getAll() {
-        List<Task> consulta = taskService.consultarTodas();
+    @GetMapping("/user/{id_user}")
+    public ResponseEntity<List<Task>> getByUser(@PathVariable("id_user") Long id_user) {
+        List<Task> consulta = taskService.consultarTodasDoUsuario(id_user);
         return ResponseEntity.ok(consulta);
     }
 
