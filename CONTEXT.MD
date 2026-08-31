@@ -8,8 +8,8 @@ Atualizado manualmente pelo desenvolvedor ao concluir etapas.
 ## Estado atual
 
 **Fase**: Fase 1 - API completa com Spring Boot + JPA
-**Semana em andamento**: Semana 3
-**Próximo desafio**: Relacionamentos JPA entre entidades, problema N+1, query customizada com JPQL
+**Semana em andamento**: Semana 4
+**Próximo desafio**: DTOs de request e response, mapeamento com MapStruct, Flyway para versionamento do banco
 
 ---
 
@@ -39,26 +39,33 @@ Validação e tratamento de erros centralizado.
 - TaskNaoEncontradaException criada e lançada via orElseThrow em selecionarTarefa, atualizarTarefa e deletarTarefa, unificando o contrato do TaskService (Optional<Task> substituído por Task direto nos três métodos)
 - @Valid adicionado ao PUT (faltava desde o início do projeto)
 
+### Fase 1 - Semana 3 - Concluída
+Relacionamentos JPA, problema N+1, query customizada com JPQL.
+- Task como dono das relações (@ManyToOne + @JoinColumn) com Usuario e Category; Usuario e Category como lado inverso (@OneToMany mappedBy)
+- @JsonIgnore em Usuario.tasks e Category.tasks resolvendo loop infinito de serialização do relacionamento bidirecional
+- UsuarioNaoEncontrado criada e lançada via orElseThrow em criarTarefa, com handler correspondente no GlobalExceptionHandler
+- TaskRepository.consultarTodasDoUsuario com JOIN FETCH em JPQL, evitando N+1 na listagem de tarefas por usuário
+- GET /tasks sem escopo removido (decisão de produto: listagem só faz sentido por usuário); consultarTodas() removido de TaskService, TaskServiceImpl e TaskController
+
 **Pendências registradas, não bloqueiam, retomar quando conveniente**:
 - CriarTaskDTO perdeu as mensagens customizadas do @NotBlank (voltou pro texto padrão do Bean Validation)
 - DELETE retorna 200 com o corpo da tarefa deletada, fora do padrão mais comum (204 sem corpo), decisão de design a confirmar se foi intencional
-- Imports não usados: Optional em TaskService e TaskServiceImpl, ResponseEntity em TaskServiceImpl, Valid em CriarTaskDTO
+- Import não usado: ResponseEntity em TaskServiceImpl
+- @JoinColumn(name = "id_categoria" vs "categoria") e nomes de coluna em geral (id_user, id_categoria) sem convenção fixa entre si, vale padronizar
+- Entidades ainda são expostas diretamente na resposta da API (Task, e por consequência Usuario/Category resumidos via @JsonIgnore); Semana 4 resolve isso com DTOs de resposta
 
 ---
 
 ## Em andamento
 
-### Fase 1 - Semana 3
-**Objetivo**: Relacionamentos JPA entre entidades, problema N+1, query customizada com JPQL
+### Fase 1 - Semana 4
+**Objetivo**: DTOs de request e response. Mapeamento com MapStruct. Flyway para versionamento do banco.
 
-**Pendências da semana anterior**: as três listadas acima, não bloqueiam o início da semana 3
+**Pendências da semana anterior**: as listadas acima, não bloqueiam o início da semana 4
 
 ---
 
 ## Pendente
-
-### Fase 1 - Semana 4
-DTOs de request e response. Mapeamento com MapStruct. Flyway para versionamento do banco.
 
 ### Fase 1 - Semana 5
 Paginação com Pageable. Filtros por parâmetros de consulta.
@@ -96,3 +103,4 @@ Preparação para entrevista técnica. Candidaturas.
 |------|----------------|------------|---------------|
 | Semana 1 | CRUD completo, entidades mapeadas, validado no Postman | - | Semana 2: validação e tratamento de erros |
 | Semana 2 | GlobalExceptionHandler centralizado, ErroDTO/ErroValidacaoDTO, TaskNaoEncontradaException, @Valid no PUT | Mensagens customizadas do DTO perdidas; DELETE com status 200 em vez de 204; imports não usados | Semana 3: relacionamentos JPA, N+1, JPQL |
+| Semana 3 | Relacionamentos JPA (Task dono, Usuario/Category inverso), @JsonIgnore no loop de serialização, UsuarioNaoEncontrado + handler, JOIN FETCH em JPQL pra evitar N+1, GET /tasks sem escopo removido | Pendências acumuladas da semana 2 ainda abertas; entidades ainda expostas direto na API | Semana 4: DTOs de request/response, MapStruct, Flyway |

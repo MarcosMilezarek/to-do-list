@@ -1,0 +1,18 @@
+$kind: http-request
+name: CreateTask
+url: http://localhost:8080/tasks/user/3
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: "{\r
+
+    \    \"descricao\": \"Estudar Spring Atualizado\",\r
+
+    \    \"status\": \"Atrasado\"\r
+
+    \r
+
+    }"
+order: 2000

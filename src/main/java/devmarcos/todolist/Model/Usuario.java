@@ -1,5 +1,6 @@
 package devmarcos.todolist.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,6 +27,7 @@ public class Usuario{
     private Instant modificationTime;
 
     @OneToMany(mappedBy = "usuario")
+    @JsonIgnore
     private List<Task> tasks;
 
     public Usuario(String nome, String email, Instant creationTime, Instant modificationTime) {

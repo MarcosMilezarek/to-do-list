@@ -2,32 +2,37 @@ package devmarcos.todolist.service;
 
 import devmarcos.todolist.Model.Task;
 import devmarcos.todolist.controller.CriarTaskDTO;
+import devmarcos.todolist.exception.UsuarioNaoEncontrado;
 import devmarcos.todolist.exception.TaskNaoEncontradaException;
 import devmarcos.todolist.repository.TaskRepository;
-import org.springframework.http.ResponseEntity;
+import devmarcos.todolist.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.Optional;
 
 
 @Service
 public class TaskServiceImpl implements TaskService {
 
     private final TaskRepository taskRepository;
-
-    public TaskServiceImpl(TaskRepository taskRepository) {
+    private final UserRepository userRepository;
+    public TaskServiceImpl(TaskRepository taskRepository, UserRepository userRepository) {
         this.taskRepository = taskRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
-    public Task criarTarefa(CriarTaskDTO criarTaskDTO) {
+    public Task criarTarefa(CriarTaskDTO criarTaskDTO,  Long user_id) {
         Task entidade = new Task(
                 criarTaskDTO.descricao(),
                 criarTaskDTO.status(),
                 Instant.now(),
                 null);
+
+        entidade.setUsuario(userRepository.findById(user_id)
+                .orElseThrow(() -> new UsuarioNaoEncontrado(user_id)));
+
         return taskRepository.save(entidade);
 
     }
@@ -54,9 +59,8 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<Task> consultarTodas() {
-        return taskRepository.findAll();
+    public List<Task> consultarTodasDoUsuario(Long id_user) {
+        return taskRepository.consultarTodasDoUsuario(id_user);
     }
-
 
 }

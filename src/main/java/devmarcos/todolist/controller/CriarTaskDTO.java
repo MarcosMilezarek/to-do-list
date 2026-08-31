@@ -1,6 +1,4 @@
 package devmarcos.todolist.controller;
-
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 
 public record CriarTaskDTO(
