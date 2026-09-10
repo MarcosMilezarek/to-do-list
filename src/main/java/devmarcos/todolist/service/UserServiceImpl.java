@@ -1,7 +1,7 @@
 package devmarcos.todolist.service;
 
 import devmarcos.todolist.Model.Usuario;
-import devmarcos.todolist.controller.CreateUserDTO;
+import devmarcos.todolist.dto.CreateUserDTO;
 import devmarcos.todolist.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -26,10 +26,11 @@ public class UserServiceImpl implements UserService {
         );
 
         return userRepository.save(usuario);
-    }
 
+    }
     @Override
-    public Usuario findById(long id) {
-        return null;
+    public Usuario FindUserByEmail(String email) {
+    return userRepository.findByEmail(email);
     }
 }
+

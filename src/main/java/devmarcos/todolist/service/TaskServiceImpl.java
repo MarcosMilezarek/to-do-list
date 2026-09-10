@@ -1,7 +1,7 @@
 package devmarcos.todolist.service;
 
 import devmarcos.todolist.Model.Task;
-import devmarcos.todolist.controller.CriarTaskDTO;
+import devmarcos.todolist.dto.CriarTaskDTO;
 import devmarcos.todolist.exception.UsuarioNaoEncontrado;
 import devmarcos.todolist.exception.TaskNaoEncontradaException;
 import devmarcos.todolist.repository.TaskRepository;
@@ -23,15 +23,15 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Task criarTarefa(CriarTaskDTO criarTaskDTO,  Long user_id) {
+    public Task criarTarefa(CriarTaskDTO criarTaskDTO) {
         Task entidade = new Task(
                 criarTaskDTO.descricao(),
                 criarTaskDTO.status(),
                 Instant.now(),
                 null);
 
-        entidade.setUsuario(userRepository.findById(user_id)
-                .orElseThrow(() -> new UsuarioNaoEncontrado(user_id)));
+        entidade.setUsuario(userRepository.findById(criarTaskDTO.id_user())
+                .orElseThrow(() -> new UsuarioNaoEncontrado(criarTaskDTO.id_user())));
 
         return taskRepository.save(entidade);
 
