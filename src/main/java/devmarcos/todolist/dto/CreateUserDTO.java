@@ -1,7 +1,4 @@
-package devmarcos.todolist.controller;
-
-import jakarta.validation.constraints.NotBlank;
-import org.springframework.http.HttpStatus;
+package devmarcos.todolist.dto;
 
 import java.time.Instant;
 

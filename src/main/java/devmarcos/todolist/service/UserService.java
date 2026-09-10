@@ -1,13 +1,12 @@
 package devmarcos.todolist.service;
 
 import devmarcos.todolist.Model.Usuario;
-import devmarcos.todolist.controller.CreateUserDTO;
-import org.springframework.stereotype.Service;
+import devmarcos.todolist.dto.CreateUserDTO;
 
 
 public interface UserService {
 
     Usuario createUser(CreateUserDTO createUserDTO);
-    Usuario findById(long id);
+    Usuario FindUserByEmail(String email);
 
 }
