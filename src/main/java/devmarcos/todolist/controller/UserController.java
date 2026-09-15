@@ -22,13 +22,11 @@ public class UserController {
     @PostMapping
     public ResponseEntity<UsuarioResumoDTO> createUser(@RequestBody @Valid CreateUserDTO createUserDTO) {
         Usuario user = userService.createUser(createUserDTO);
-        UsuarioResumoDTO usuarioResumoDTO = new UsuarioResumoDTO(user.getId(), user.getNome());
-        return ResponseEntity.ok(usuarioResumoDTO);
+        return ResponseEntity.ok(UsuarioResumoDTO.from(user));
     }
     @GetMapping("/login/{email}")
     public ResponseEntity<UsuarioResumoDTO> loginUser(@PathVariable(name = "email") String email) {
         Usuario user = userService.FindUserByEmail(email);
-        UsuarioResumoDTO usuarioResumoDTO = new UsuarioResumoDTO(user.getId(), user.getNome());
-        return ResponseEntity.ok(usuarioResumoDTO);
+        return ResponseEntity.ok(UsuarioResumoDTO.from(user));
     }
 }
