@@ -1,8 +1,9 @@
 package devmarcos.todolist.dto;
 
-import java.time.Instant;
+import jakarta.validation.constraints.NotBlank;
 
-
-public record CreateUserDTO(String name, String email, Instant creationTime, Instant modificationTime) {
+public record CreateUserDTO(
+        @NotBlank(message = "Nome é obrigatório") String name,
+        @NotBlank(message = "Email é obrigatório") String email) {
 
 }

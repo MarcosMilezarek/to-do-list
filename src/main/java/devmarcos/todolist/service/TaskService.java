@@ -2,8 +2,9 @@ package devmarcos.todolist.service;
 
 import devmarcos.todolist.Model.Task;
 import devmarcos.todolist.dto.CriarTaskDTO;
-
-import java.util.List;
+import devmarcos.todolist.dto.TaskResponseDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface TaskService {
 
@@ -15,5 +16,7 @@ public interface TaskService {
 
     Task selecionarTarefa(Long id);
 
-    List<Task> consultarTodasDoUsuario(Long id_user);
+    Page<TaskResponseDTO> consultarTarefasPaginada(Long usuarioId, Pageable pageable, String status, Long categoriaId);
+
+
 }

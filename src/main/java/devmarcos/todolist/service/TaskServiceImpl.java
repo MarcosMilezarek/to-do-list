@@ -1,15 +1,16 @@
 package devmarcos.todolist.service;
-
 import devmarcos.todolist.Model.Task;
 import devmarcos.todolist.dto.CriarTaskDTO;
+import devmarcos.todolist.dto.TaskResponseDTO;
 import devmarcos.todolist.exception.UsuarioNaoEncontrado;
 import devmarcos.todolist.exception.TaskNaoEncontradaException;
 import devmarcos.todolist.repository.TaskRepository;
 import devmarcos.todolist.repository.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 import java.time.Instant;
-import java.util.List;
+
 
 
 @Service
@@ -59,8 +60,10 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<Task> consultarTodasDoUsuario(Long id_user) {
-        return taskRepository.consultarTodasDoUsuario(id_user);
+    public Page<TaskResponseDTO> consultarTarefasPaginada(Long usuarioId, Pageable pageable, String status, Long categoriaId) {
+        Page<Task> tasks = taskRepository.consultarTarefasPaginadaDoUsuario(usuarioId,status, categoriaId, pageable);
+        return tasks.map(TaskResponseDTO::from);
     }
+
 
 }
