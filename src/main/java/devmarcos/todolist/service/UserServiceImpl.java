@@ -4,6 +4,7 @@ import devmarcos.todolist.Model.Usuario;
 import devmarcos.todolist.dto.CreateUserDTO;
 import devmarcos.todolist.exception.UsuarioNaoEncontrado;
 import devmarcos.todolist.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -11,9 +12,10 @@ import java.time.Instant;
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
-
-    public UserServiceImpl(UserRepository userRepository) {
+    private final PasswordEncoder passwordEncoder;
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -23,7 +25,9 @@ public class UserServiceImpl implements UserService {
                 createUserDTO.name(),
                 createUserDTO.email(),
                 Instant.now(),
-                null
+                null,
+                passwordEncoder.encode(createUserDTO.senha())
+
         );
 
         return userRepository.save(usuario);

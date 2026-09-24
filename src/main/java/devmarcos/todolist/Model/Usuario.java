@@ -19,6 +19,7 @@ public class Usuario{
     private Long id;
     private String nome;
     private String email;
+    private String senha;
 
     @CreationTimestamp
     private Instant creationTime;
@@ -30,11 +31,12 @@ public class Usuario{
     @JsonIgnore
     private List<Task> tasks;
 
-    public Usuario(String nome, String email, Instant creationTime, Instant modificationTime) {
+    public Usuario(String nome, String email, Instant creationTime, Instant modificationTime, String senha) {
         this.nome = nome;
         this.email = email;
         this.creationTime = creationTime;
         this.modificationTime = modificationTime;
+        this.senha = senha;
     }
 
     public Usuario() {
