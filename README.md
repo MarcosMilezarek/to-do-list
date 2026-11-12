@@ -1,5 +1,7 @@
 # To-Do List API
 
+[![CI](https://github.com/MarcosMilezarek/to-do-list/actions/workflows/ci.yml/badge.svg)](https://github.com/MarcosMilezarek/to-do-list/actions/workflows/ci.yml)
+
 API REST para gerenciamento de tarefas, com usuários e categorias, construída como projeto de estudo backend em Java.
 
 ## Stack
